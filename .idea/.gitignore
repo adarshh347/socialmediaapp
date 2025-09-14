@@ -1,0 +1,33 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment/secret files
+*.env
+*.env.*
+
+# VS Code settings (optional)
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Test & coverage outputs
+*.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
+# Packaging / build
+build/
+dist/
+*.egg-info/
