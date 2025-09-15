@@ -17,6 +17,10 @@ class Post(BaseModel):
     title:str
     content:str
     published: bool=True
+
+
+
+
 while True:
     try:
         conn=psycopg2.connect(host= 'localhost' ,database='fastapi' ,user='postgres' ,password='1234', cursor_factory =RealDictCursor)
@@ -35,14 +39,26 @@ async def root():
     # abc = "adarsh"
     # return abc
 
-ds=['array','string','ll','dll']
+my_posts = [
+    {"title": "title of post 1", "content": "content of post 1", "id": 1},
+    {"title": "favorite foods", "content": "I like pizza", "id": 2}
+]
+@app.get("/postss")
+def get_posts():
+    cursor.execute("""  SELECT * FROM POSTS """)
+    posts=cursor.fetchall()
+    print(posts)
+    return {"data": posts}
 
-@app.get('/reverse')
-async def root():
-    abc="adarsh"
-    return {'msg': 'hello world'}
-    # return abc
-    # results={}
-    # for i in range(len(ds)):
-    #     results[i]=ds[i]
-    # return results
+@app.post('/posts', status_code=status.HTTP_201_CREATED)
+def create_posts(post:Post):
+    # important line below: how to create new rows in database through the code itself using cursor command
+    cursor.execute(f"INSERT INTO posts(title, content, published) VALUES( {post.title}, {post.content}, {post.published} )")
+
+    # second way below
+    # cursor.execute(""" INSERT INTO posts(title, content, published) VALUES (%s,%s,%s) """, (post.title, post.content, post.published))
+
+    post_dict=post.dict()
+    post_dict['id']=randrange(0,10000000)
+    my_posts.append(post_dict)
+    return {"data": post_dict}
